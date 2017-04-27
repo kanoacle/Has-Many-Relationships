@@ -66,3 +66,18 @@ INNER JOIN users ON comments.users_id = users.id
 WHERE posts.content LIKE '%nemo%'
 AND (comments.body LIKE '%SSL%'
 OR comments.body LIKE '%firewall%');
+-- getting post id, post title, and user id of posts where the author commented on his/her own post
+SELECT posts.id, posts.title, posts.users_id, comments.users_id
+FROM posts
+RIGHT JOIN comments ON posts.id = comments.posts_id
+WHERE posts.users_id = comments.users_id;
+-- getting count of comments on posts that were created after 7/14/15
+SELECT count(*)
+FROM comments
+INNER JOIN posts ON comments.posts_id = posts.id
+WHERE comments.created_at >= timestamp '2015-07-14 00:00:00';
+-- getting all users who comment about 'programming'
+SELECT users.first_name AS "First Name", users.last_name AS "Last Name", users.username
+FROM users
+JOIN comments ON comments.users_id = users.id
+WHERE comments.body LIKE '%programming%';
